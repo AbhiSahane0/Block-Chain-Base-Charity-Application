@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-contract Charity{
+contract CharityContract{
     constructor() {}
 
     struct Charity {
@@ -43,13 +43,13 @@ contract Charity{
 
         Charity storage charity = Charities[_id];
 
-        Charity.donators.push(msg.sender);
-        Charity.doanations.push(amount);
+        charity.donators.push(msg.sender);
+        charity.donations.push(amount);
 
-        (bool sent,) = payable(Charity.owner).call{value: amount}("");
+        (bool sent,) = payable(charity.owner).call{value: amount}("");
 
         if(sent){
-            Charity.amountCollected = Charity.amountCollected + amount;
+            charity.amountCollected = charity.amountCollected + amount;
         }
     } 
     
