@@ -36,7 +36,7 @@ const Navbar = () => {
           title={address ? "create a charity" : "connect"}
           styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
           handleClick={() => {
-            if (address) navigate("create-campaing");
+            if (address) navigate("create-charity");
             else "connect()";
           }}
         />
@@ -108,7 +108,7 @@ const Navbar = () => {
               title={address ? "create a charity" : "connect"}
               styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
               handleClick={() => {
-                if (address) navigate("create-campaing");
+                if (address) navigate("create-charity");
                 else "connect()";
               }}
             />
