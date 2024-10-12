@@ -12,7 +12,11 @@ function App() {
       <div className="flex-1 max-sm:w-full mar-w-[1280px] mx-auto sm:pr-5">
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />}></Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/create-charity" element={<CreateCharity />} />
+          <Route path="/cherity-detail/:id" element={<CharityDetail />} />
+          <Route />
         </Routes>
       </div>
     </div>
