@@ -18,7 +18,17 @@ function CreateCharity() {
     image: "",
   });
 
-  function handleSubmit() {}
+  function handleFormFieldChange(
+    fieldName: string,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
+    setForm({ ...form, [fieldName]: e.target.value });
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    console.log(form);
+  }
 
   return (
     <div className="bg-[#1c1c24] flex justify-center item-center flex-col rounded-[10px] sm:p-10 p-4 mt-[20px] md:m-[30px]">
@@ -34,29 +44,29 @@ function CreateCharity() {
       >
         <div className="flex flex-wrap gap-[40px]">
           <FormField
-            labelName="charity Title"
-            placeholder="Write a title"
+            labelName="Your Name *"
+            placeholder="John Doe"
             inputType="text"
-            value={form.title}
-            handleChange={() => {}}
+            value={form.name}
+            handleChange={(e) => handleFormFieldChange("name", e)} // Fix the field name here
           />
           <FormField
-            labelName="charity Title"
+            labelName="Charity Title *"
             placeholder="Write a title"
             inputType="text"
             value={form.title}
-            handleChange={() => {}}
+            handleChange={(e) => handleFormFieldChange("title", e)}
           />
         </div>
         <FormField
-          labelName="Story"
-          placeholder="Write your story"
+          labelName="Story *"
+          placeholder="Write your story why you want to raise a charity."
           isTextArea
           value={form.description}
-          handleChange={() => {}}
+          handleChange={(e) => handleFormFieldChange("description", e)}
         />
 
-        <div className="w-full flex justify-start items-center p-4 bg-[#8c6dfd] h-120px] rounded-[10px]">
+        <div className="w-full flex justify-center items-center p-4 bg-[#8c6dfd] h-120px rounded-[10px]">
           <img
             src={money}
             alt="Money"
@@ -72,23 +82,31 @@ function CreateCharity() {
             placeholder="ETH 0.50"
             inputType="text"
             value={form.target}
-            handleChange={() => {}}
+            handleChange={(e) => handleFormFieldChange("target", e)}
           />
           <FormField
             labelName="End Date *"
             placeholder="End Date"
             inputType="date"
             value={form.deadline}
-            handleChange={() => {}}
+            handleChange={(e) => handleFormFieldChange("deadline", e)}
           />
+        </div>
 
-          <div className="flex justify-center item-center mt-[40px]">
-            <CustomButton
-              btnType="submit"
-              title="Submit new charity"
-              styles="bg-[#1dc071]"
-            />
-          </div>
+        <FormField
+          labelName="Charity Image *"
+          placeholder="Place url of your Charity"
+          inputType="url"
+          value={form.image}
+          handleChange={(e) => handleFormFieldChange("image", e)}
+        />
+
+        <div className="flex justify-center item-center mt-[40px]">
+          <CustomButton
+            btnType="submit"
+            title="Submit new charity"
+            styles="bg-[#1dc071]"
+          />
         </div>
       </form>
     </div>
