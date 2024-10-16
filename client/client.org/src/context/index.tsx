@@ -5,7 +5,7 @@ import {
   useContractWrite,
   SmartContract,
   ConnectWallet,
-  useConnect,
+  useWallet,
   WalletInstance,
 } from "@thirdweb-dev/react";
 import { ethers } from "ethers";
@@ -21,7 +21,6 @@ interface StateContextType {
     deadline: string | number | Date;
     image: string;
   }) => Promise<void>;
-  connect: () => Promise<WalletInstance>;
 }
 
 // Initialize StateContext with the correct type
@@ -45,7 +44,8 @@ export const StateContextProvider: React.FC<StateContextProviderProps> = ({
     "createCharity"
   );
   const address = useAddress();
-  const connect = useConnect();
+  const connect = useWallet();
+
   const publishCharity = async (form: {
     title: string;
     description: string;
@@ -60,7 +60,6 @@ export const StateContextProvider: React.FC<StateContextProviderProps> = ({
           address,
           form.title,
           form.description,
-          // form.target,
           bigNumberTarget,
           new Date(form.deadline).getTime(),
           form.image,
@@ -72,13 +71,11 @@ export const StateContextProvider: React.FC<StateContextProviderProps> = ({
     }
   };
 
-  // Provide the context value
   return (
     <StateContext.Provider
       value={{
         address,
         contract,
-        connect,
         createCharity: publishCharity,
       }}
     >

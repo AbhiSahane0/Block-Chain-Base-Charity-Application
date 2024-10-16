@@ -5,14 +5,19 @@ import { useStateContext } from "../context";
 import { CustomButton } from "./";
 import { logo, menu, search, thirdweb } from "../assets";
 import { navlinks } from "../constants";
+import { ConnectWallet } from "@thirdweb-dev/react";
+
+import { useConnect, metamaskWallet } from "@thirdweb-dev/react";
+const metamaskConfig = metamaskWallet();
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState("dashboard");
   const [toggleDrawer, settoogleDrawer] = useState(false);
-  const { connect, address } = useStateContext();
+  // const { connect, address } = useStateContext();
+  const [address, setaddress] = useState("");
 
-  // const address = "0xabc";
+  const connect = useConnect();
 
   return (
     <div className="flex md:flex-row flex-col-reverse justify-between mr-[35px] gap-6">
@@ -37,11 +42,22 @@ const Navbar = () => {
           btnType="button"
           title={address ? "create a charity" : "connect"}
           styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
-          handleClick={() => {
-            if (address) navigate("create-charity");
-            else connect();
+          handleClick={async () => {
+            if (address) {
+              navigate("create-charity");
+            } else {
+              try {
+                const wallet = await connect(metamaskConfig);
+                console.log("Connected to ", wallet);
+                setaddress(await wallet.getAddress());
+                console.log("Wallet Address: ", address);
+              } catch (error) {
+                console.error("Failed to connect to wallet:", error);
+              }
+            }
           }}
         />
+
         {/* profile button */}
         <Link to="/profile">
           <div className="w-[52px] h-[52px] rounded-[100px] bg-[#2c2f32] flex justify-center items-center cursor-pointer">
@@ -109,9 +125,19 @@ const Navbar = () => {
               btnType="button"
               title={address ? "create a charity" : "connect"}
               styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
-              handleClick={() => {
-                if (address) navigate("create-charity");
-                else connect();
+              handleClick={async () => {
+                if (address) {
+                  navigate("create-charity");
+                } else {
+                  try {
+                    const wallet = await connect(metamaskConfig);
+                    console.log("Connected to ", wallet);
+                    setaddress(await wallet.getAddress());
+                    console.log("Wallet Address: ", address);
+                  } catch (error) {
+                    console.error("Failed to connect to wallet:", error);
+                  }
+                }
               }}
             />
           </div>
