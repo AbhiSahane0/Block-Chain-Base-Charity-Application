@@ -4,6 +4,9 @@ import {
   useContract,
   useContractWrite,
   SmartContract,
+  ConnectWallet,
+  useWallet,
+  WalletInstance,
 } from "@thirdweb-dev/react";
 import { ethers } from "ethers";
 
@@ -14,9 +17,8 @@ interface StateContextType {
   createCharity: (form: {
     title: string;
     description: string;
-    target: ethers.BigNumber;
+    target: number;
     deadline: string | number | Date;
-    minAmount: ethers.BigNumber;
     image: string;
   }) => Promise<void>;
 }
@@ -42,24 +44,24 @@ export const StateContextProvider: React.FC<StateContextProviderProps> = ({
     "createCharity"
   );
   const address = useAddress();
+  const connect = useWallet();
 
   const publishCharity = async (form: {
     title: string;
     description: string;
-    target: ethers.BigNumber;
+    target: number;
     deadline: string | number | Date;
-    minAmount: ethers.BigNumber;
     image: string;
   }) => {
     try {
+      const bigNumberTarget = ethers.BigNumber.from(form.target);
       const data = await createCharity({
         args: [
           address,
           form.title,
           form.description,
-          form.target,
+          bigNumberTarget,
           new Date(form.deadline).getTime(),
-          form.minAmount,
           form.image,
         ],
       });
@@ -69,7 +71,6 @@ export const StateContextProvider: React.FC<StateContextProviderProps> = ({
     }
   };
 
-  // Provide the context value
   return (
     <StateContext.Provider
       value={{
