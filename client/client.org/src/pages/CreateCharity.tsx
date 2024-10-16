@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import { money } from "../assets";
 import { CustomButton, FormField } from "../components";
 import { checkIfImage } from "../utils";
+import { useStateContext } from "../context";
 
 function CreateCharity() {
   const navigate = useNavigate();
@@ -13,22 +14,41 @@ function CreateCharity() {
     name: "",
     title: "",
     description: "",
-    target: "",
+    target: 0,
     deadline: "",
     image: "",
   });
+  const { createCharity } = useStateContext();
 
   function handleFormFieldChange(
-    fieldName: string,
+    field: string,
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
-    setForm({ ...form, [fieldName]: e.target.value });
+    if (field === "target") {
+      setForm({ ...form, [field]: parseFloat(e.target.value) }); // Convert string to number
+    } else {
+      setForm({ ...form, [field]: e.target.value });
+    }
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    checkIfImage(form.image, async (exists) => {
+      if (exists) {
+        setIsLoading(true);
+        await createCharity({ ...form, target: form.target });
+        // utils.parseUnits(form.target, 18)
+        setIsLoading(false);
+        navigate("/");
+      } else {
+        alert("provide valid image");
+        setForm({ ...form, image: "" });
+      }
+    });
+
     console.log(form);
-  }
+  };
 
   return (
     <div className="bg-[#1c1c24] flex justify-center item-center flex-col rounded-[10px] sm:p-10 p-4 mt-[20px] md:m-[30px]">
@@ -80,8 +100,8 @@ function CreateCharity() {
           <FormField
             labelName="Goal *"
             placeholder="ETH 0.50"
-            inputType="text"
-            value={form.target}
+            inputType="number"
+            value={form.target.toString()}
             handleChange={(e) => handleFormFieldChange("target", e)}
           />
           <FormField
