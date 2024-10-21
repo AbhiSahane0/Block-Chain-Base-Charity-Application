@@ -14,10 +14,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState("dashboard");
   const [toggleDrawer, settoogleDrawer] = useState(false);
-  // const { connect, address } = useStateContext();
-  const [address, setaddress] = useState("");
-
-  const connect = useConnect();
+  const { connect, address } = useStateContext();
+  // const [address, setaddress] = useState("");
 
   return (
     <div className="flex md:flex-row flex-col-reverse justify-between mr-[35px] gap-6">
@@ -42,19 +40,9 @@ const Navbar = () => {
           btnType="button"
           title={address ? "create a charity" : "connect"}
           styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
-          handleClick={async () => {
-            if (address) {
-              navigate("create-charity");
-            } else {
-              try {
-                const wallet = await connect(metamaskConfig);
-                console.log("Connected to ", wallet);
-                setaddress(await wallet.getAddress());
-                console.log("Wallet Address: ", address);
-              } catch (error) {
-                console.error("Failed to connect to wallet:", error);
-              }
-            }
+          handleClick={() => {
+            if (address) navigate("create-charity");
+            else connect();
           }}
         />
 
@@ -125,19 +113,9 @@ const Navbar = () => {
               btnType="button"
               title={address ? "create a charity" : "connect"}
               styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
-              handleClick={async () => {
-                if (address) {
-                  navigate("create-charity");
-                } else {
-                  try {
-                    const wallet = await connect(metamaskConfig);
-                    console.log("Connected to ", wallet);
-                    setaddress(await wallet.getAddress());
-                    console.log("Wallet Address: ", address);
-                  } catch (error) {
-                    console.error("Failed to connect to wallet:", error);
-                  }
-                }
+              handleClick={() => {
+                if (address) navigate("create-charity");
+                else connect();
               }}
             />
           </div>
