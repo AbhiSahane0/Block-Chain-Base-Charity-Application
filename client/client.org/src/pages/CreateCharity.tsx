@@ -38,7 +38,6 @@ function CreateCharity() {
       if (exists) {
         setIsLoading(true);
         await createCharity({ ...form, target: form.target });
-        // utils.parseUnits(form.target, 18)
         setIsLoading(false);
         navigate("/");
       } else {

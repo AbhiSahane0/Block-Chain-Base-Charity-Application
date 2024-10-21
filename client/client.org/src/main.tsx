@@ -9,7 +9,10 @@ import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThirdwebProvider activeChain={ChainId.Sepolia}>
+    <ThirdwebProvider
+      activeChain="sepolia"
+      clientId="534910273d32d64fe471543b28d4127d"
+    >
       <Router>
         <StateContextProvider>
           <App />
